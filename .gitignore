@@ -50,7 +50,9 @@ backend/*.powenv
 backend/*.byebug_history
 
 # Ignore node_modules
-frontend/node_modules/**
+frontend/node_modules
+frontend/.next
+frontend/*.log
 
 # Ignore precompiled javascript packs
 backend/public/packs
@@ -60,9 +62,9 @@ backend/public/assets
 # Ignore yarn files
 backend/yarn-error.log
 backend/yarn-debug.log*
-backend/*.yarn-integrity
+backend/.yarn-integrity
 
 # Ignore uploaded files in development
 backend/storage/*
-!backend/storage/.keep
+!/backend/storage/.keep
 .idea
