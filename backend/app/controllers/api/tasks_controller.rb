@@ -8,14 +8,13 @@ class Api::TasksController < Api::ApiController
     task = Task.new(create_params)
 
     if task.save
-      render json: { title: task.title }
+      render json: { id: task.id, title: task.title }
     else
       render json: { errors: task.errors }, status: 400
     end
   end
 
   private
-
   def create_params
     params.permit(:title)
   end
