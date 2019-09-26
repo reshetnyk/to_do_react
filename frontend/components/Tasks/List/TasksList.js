@@ -1,12 +1,12 @@
 import { useState } from "react"
 import fetch from "isomorphic-unfetch";
-
+import RemoveLink from "./RemoveLink";
+import { makeRequest } from '../../../utils/RequestUtils'
 
 const TasksList = (props) => {
   const tasks = props.tasks
   const setTasks = props.setTasks
 
-  const [tasksForDeleting, setTasksForDeleting] = useState([])
   const [selectAllValue, setSelectAllValue] = useState(false)
 
   const checkboxOnChange = (t) => {
@@ -24,45 +24,47 @@ const TasksList = (props) => {
   }
 
   const listItems = () => {
-    if(tasks.length === 0 ){
-      return (<div></div>)
-    }
     return tasks.map((task, i) =>
       <li key={i} className="list-group-item">
         <input type="checkbox" checked={task.checked} onChange={() => checkboxOnChange(task)} />
         {task.title}
+        <RemoveLink task={task} deleteListItem={deleteListItem} />
       </li>
-    );
-  };
+    )
+  }
+  const deleteListItem = (taskId) => {
+    const newTasksArray = tasks.filter(task => task.id !== taskId)
+    setTasks(newTasksArray)
+    console.log('delete')
+    console.log(newTasksArray)
+  }
 
   const deleteAllBtnOnClick = () => {
-    let tasksIds = [];
-    tasks.forEach(t => {
-      if(t.checked){
-        tasksIds = [...tasksIds, t.id]
+    const deletedTasksIds = tasks.map(task => {
+      if(task.checked){
+        return task.id
       }
     })
-    fetch('http://localhost:3000/api/tasks', {
+
+    const data = makeRequest({
+      url: 'http://localhost:3000/api/task_bulk_removes',
       method: 'delete',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({tasks: tasksIds}),
-    })
-      .then((resp) => resp.json())
-      .then(function(response) {
-        if (response){
-          console.log(response);
-        }
-      })
+      data: { tasks: deletedTasksIds }
+    }).then(data => console.log(data))
+
+
+    const updatedTasks = tasks.filter((task) => !deletedTasksIds.includes(task.id))
+    setTasks([...updatedTasks])
+    setSelectAllValue(false)
   }
+
   const toggleAllChecks = (checkState) => {
     const updatedTasks = tasks.map(task => {
       return {...task, checked: checkState}
     })
     setTasks(updatedTasks)
   }
+
   const selectAllOnChange = () => {
     const oldValue = selectAllValue
     setSelectAllValue(!oldValue)
@@ -73,7 +75,7 @@ const TasksList = (props) => {
     <div>
       <input type="checkbox" checked={selectAllValue} onChange={selectAllOnChange} />
       <ul className="list-group">{listItems()}</ul>
-      <button onClick={deleteAllBtnOnClick} >delete all</button>
+      <button onClick={deleteAllBtnOnClick}>delete all</button>
     </div>
   )
 }

@@ -14,6 +14,16 @@ class Api::TasksController < Api::ApiController
     end
   end
 
+  def destroy
+    begin
+      Task.delete(params[:id])
+    rescue => error
+      render json: { errors: error }, status: 400
+    else
+      render json: { task: params[:task] }
+    end
+  end
+
   private
   def create_params
     params.permit(:title)

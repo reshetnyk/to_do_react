@@ -17,7 +17,9 @@ const index = () =>  {
         })
         setTasks(newTasks)
         // console.log(newTasks)
-      })
+      }).catch(e => {
+      console.log(e.message)
+    })
     // setTasks(resp.tasks)
   }, [])
 

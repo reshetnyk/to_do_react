@@ -14,17 +14,20 @@ const TasksForm = (props) => {
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify(params),
-    }).then((resp) => resp.json()).then(function(response) {
+    }).then((resp) => resp.json()).then(response => {
       if (response){
-        setTasks([...tasks, response])
+        console.log(response)
+        setTasks([...tasks, {...response, checked: false}])
       }
     })
   }
   const formOnSubmit = (e) => {
     e.preventDefault()
-    if (inputValue.length > 0) {
+    const taskTitle = inputValue
+    if (taskTitle.length > 0) {
       setInputValue('')
-      createTaskRequest({ title: inputValue })
+      createTaskRequest({ title: taskTitle })
+      console.log(taskTitle)
     }
   }
   const inputOnChange = (e) => {
