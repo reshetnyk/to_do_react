@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Tasks from "../components/Tasks";
+import Tasks from '../components/Tasks'
 
 const IndexPage = () => {
   return (
-    <div className={'container'}>
+    <div className='container'>
       <Tasks />
     </div>
   )

@@ -1,20 +1,20 @@
-import fetch from "isomorphic-unfetch";
+import fetch from 'isomorphic-unfetch'
 
 // params.url
 // params.data
 // params.method
 
-export const  makeRequest = params => {
+export const makeRequest = params => {
   const url = params.url || ''
   const requestParams = {
     method: params.method || 'get',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
   }
 
-  if(requestParams.method.toLowerCase() !== 'get') {
+  if (requestParams.method.toLowerCase() !== 'get') {
     requestParams.body = JSON.stringify(params.data) || null
   }
 

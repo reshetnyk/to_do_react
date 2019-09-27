@@ -9,7 +9,7 @@ const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
 
   const toggleAllChecks = (checkState) => {
     const updatedTasks = tasks.map(task => {
-      return {...task, checked: checkState}
+      return { ...task, checked: checkState }
     })
     setTasks(updatedTasks)
   }

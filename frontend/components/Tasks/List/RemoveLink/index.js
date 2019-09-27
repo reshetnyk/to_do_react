@@ -1,7 +1,7 @@
 import { makeRequest } from '../../../../utils/RequestUtils'
 import './index.css'
 
-const Index = ( { task, deleteListItem }) => {
+const Index = ({ task, deleteListItem }) => {
   const linkOnClick = (e) => {
     e.stopPropagation()
     makeRequest({
@@ -13,9 +13,8 @@ const Index = ( { task, deleteListItem }) => {
   }
 
   return (
-    <span onClick={linkOnClick} className="fakeLink">delete</span>
+    <span onClick={linkOnClick} className='fakeLink'>delete</span>
   )
 }
 
 export default Index
-

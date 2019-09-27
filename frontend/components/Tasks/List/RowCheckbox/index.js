@@ -1,10 +1,10 @@
 const Index = ({ task, handleRowCheckbox }) => {
   return (
     <input
-      type="checkbox"
+      type='checkbox'
       checked={task.checked}
       onChange={() => handleRowCheckbox(task)}
-      className="task-checkbox"
+      className='task-checkbox'
     />
   )
 }

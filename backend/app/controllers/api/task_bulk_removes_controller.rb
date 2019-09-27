@@ -1,17 +1,16 @@
-class Api::TaskBulkRemovesController < Api::ApiController
-  def destroy
-    puts params.inspect
-    begin
-      Task.delete(params[:tasks])
-    rescue => error
-      render json: { errors: error }, status: 400
-    else
-      render json: { tasks: params[:tasks] }
-    end
-  end
+# frozen_string_literal: true
 
-  private
-  def destroy_params
-    params.permit(:tasks)
+module Api
+  class TaskBulkRemovesController < Api::ApiController
+    def destroy
+      Task.where(id: destroy_params[:tasks]).delete_all
+      render json: {}
+    end
+
+    private
+
+    def destroy_params
+      params.permit(tasks: [])
+    end
   end
 end
