@@ -3,12 +3,7 @@ import { makeRequest } from '../../../utils/RequestUtils'
 import RowCheckbox from "./RowCheckbox";
 import './index.css'
 
-const Index = (props) => {
-  const tasks = props.tasks
-  const setTasks = props.setTasks
-  const setBulkToggle = props.setBulkToggle
-
-  //handleCherow
+const Index = ({ tasks, setTasks, setBulkToggle }) => {
   const handleRowCheckbox = (t) => {
     const updatedTasks = tasks.map(taskItem => {
       if (taskItem.id === t.id) {
@@ -59,7 +54,6 @@ const Index = (props) => {
     setTasks([...updatedTasks])
     setBulkToggle(false)
   }
-
 
   return (
     <div className="tasks-list-wrap">

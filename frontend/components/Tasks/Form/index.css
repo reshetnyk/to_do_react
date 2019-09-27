@@ -1,10 +1,10 @@
 .tasks-form-content{
-    position: relative;
+  position: relative;
 }
 .tasks-all-checkbox-wrap{
-    position: absolute;
-    z-index: 100;
-    margin-left: 20px;
-    top: 50%;
-    transform: translateY(-50%)
+  position: absolute;
+  z-index: 100;
+  margin-left: 20px;
+  top: 50%;
+  transform: translateY(-50%)
 }

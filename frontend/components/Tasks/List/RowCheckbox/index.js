@@ -1,9 +1,4 @@
-
-
-const Index = (props) => {
-  const task = props.task
-  const handleRowCheckbox = props.handleRowCheckbox
-
+const Index = ({ task, handleRowCheckbox }) => {
   return (
     <input
       type="checkbox"
@@ -12,7 +7,6 @@ const Index = (props) => {
       className="task-checkbox"
     />
   )
-
 }
 
 export default Index

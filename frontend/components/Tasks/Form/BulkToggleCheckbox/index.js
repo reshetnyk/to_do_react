@@ -1,11 +1,6 @@
 import './index.css'
 
-const Index = (props) => {
-  const tasks = props.tasks
-  const setTasks = props.setTasks
-  const bulkToggle = props.bulkToggle
-  const setBulkToggle = props.setBulkToggle
-
+const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
   const selectAllOnChange = () => {
     const oldValue = bulkToggle
     setBulkToggle(!oldValue)
@@ -20,7 +15,7 @@ const Index = (props) => {
   }
 
   return (
-    <input type="checkbox" checked={bulkToggle} onChange={selectAllOnChange} />
+    <input type='checkbox' checked={bulkToggle} onChange={selectAllOnChange} />
   )
 }
 

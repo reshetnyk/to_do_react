@@ -3,12 +3,8 @@ import { makeRequest } from '../../../utils/RequestUtils'
 import BulkToggleCheckbox from "./BulkToggleCheckbox";
 import './index.css'
 
-const Index = (props) => {
+const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
   const [inputValue, setInputValue] = useState('')
-  const tasks = props.tasks
-  const setTasks = props.setTasks
-  const bulkToggle = props.bulkToggle
-  const setBulkToggle = props.setBulkToggle
 
   const formOnSubmit = (e) => {
     e.preventDefault()
