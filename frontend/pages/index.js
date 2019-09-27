@@ -5,8 +5,6 @@ const IndexPage = () => {
   return (
     <div className={'container'}>
       <Tasks />
-      <style global jsx>{`
-        `}</style>
     </div>
   )
 }

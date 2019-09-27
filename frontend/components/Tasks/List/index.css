@@ -1,0 +1,14 @@
+.link-wrap{
+    float: right;
+}
+.task-checkbox{
+    margin-right: 20px;
+}
+.tasks-list-item{
+
+}
+.tasks-list-item:hover{
+    background-color: #cecece;
+    cursor: pointer;
+    user-select: none;
+}

@@ -1,32 +1,31 @@
-import fetch from 'isomorphic-unfetch'
 import React, { useState, useEffect } from 'react'
-import TasksList from "./List/TasksList";
-import TasksForm from "./Form/TasksForm";
+import List from "./List";
+import Form from "./Form";
+import { makeRequest} from "../../utils/RequestUtils";
 
 const index = () =>  {
   const [tasks, setTasks] = useState([])
+  const [bulkToggle, setBulkToggle] = useState(false)
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/tasks')
-      .then((resp) => {
-        return resp.json()
-      })
-      .then((resp) => {
-        const newTasks = resp.tasks.map(task => {
-          return { ...task, checked: false }
-        })
+    makeRequest({ url: 'http://localhost:3000/api/tasks' })
+      .then(data => {
+          const newTasks = data.tasks.map(task => {
+            return { ...task, checked: false }
+          })
         setTasks(newTasks)
-        // console.log(newTasks)
-      }).catch(e => {
-      console.log(e.message)
-    })
-    // setTasks(resp.tasks)
+      })
   }, [])
 
   return (
     <div>
-      <TasksForm tasks={tasks} setTasks={setTasks} />
-      <TasksList tasks={tasks} setTasks={setTasks} />
+      <Form
+        tasks={tasks}
+        setTasks={setTasks}
+        bulkToggle={bulkToggle}
+        setBulkToggle={setBulkToggle}
+      />
+      <List tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} />
     </div>
   )
 }
