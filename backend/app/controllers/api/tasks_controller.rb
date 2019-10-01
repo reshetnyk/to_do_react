@@ -19,6 +19,7 @@ module Api
 
     def destroy
       Task.delete(params[:id])
+
     rescue StandardError => e
       render json: { errors: e }, status: 400
     else
