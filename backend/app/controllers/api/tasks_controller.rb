@@ -3,7 +3,7 @@
 module Api
   class TasksController < Api::ApiController
     def index
-      tasks = Task.all
+      tasks = Task.order(:position)
       render json: { tasks: tasks }
     end
 
