@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   namespace :api do
     resources :tasks
     resource :task_bulk_removes, only: :destroy
+    resource :task_update_positions, only: :update
   end
 end

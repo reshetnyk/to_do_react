@@ -7,14 +7,18 @@ const index = () => {
   const [tasks, setTasks] = useState([])
   const [bulkToggle, setBulkToggle] = useState(false)
 
-  useEffect(() => {
+  const loadTasks = () => {
     makeRequest({ url: 'http://localhost:3000/api/tasks' })
       .then(data => {
-        const newTasks = data.tasks.map(task => {
+        const newTasks = data.tasks.map((task, index) => {
           return { ...task, checked: false }
         })
         setTasks(newTasks)
       })
+  }
+
+  useEffect(() => {
+    loadTasks()
   }, [])
 
   return (
@@ -25,7 +29,7 @@ const index = () => {
         bulkToggle={bulkToggle}
         setBulkToggle={setBulkToggle}
       />
-      <List tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} />
+      <List tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} loadTasks={loadTasks} />
     </div>
   )
 }
