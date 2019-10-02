@@ -11,10 +11,9 @@ const index = () => {
     makeRequest({ url: 'http://localhost:3000/api/tasks' })
       .then(data => {
         const newTasks = data.tasks.map((task, index) => {
-          return { ...task, checked: false, dragPosition: index }
+          return { ...task, checked: false }
         })
         setTasks(newTasks)
-        console.log(newTasks)
       })
   }
 

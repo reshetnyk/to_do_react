@@ -11,19 +11,15 @@ module Api
       task = Task.new(create_params)
 
       if task.save
-        render json: { id: task.id, title: task.title }
+        render json: { id: task.id, title: task.title, position: task.position }
       else
         render json: { errors: task.errors }, status: 400
       end
     end
 
     def destroy
-      Task.delete(params[:id])
-
-    rescue StandardError => e
-      render json: { errors: e }, status: 400
-    else
-      render json: { task: params[:task] }
+      Task.destroy(params[:id])
+      render json: {}
     end
 
     private

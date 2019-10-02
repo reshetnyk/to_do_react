@@ -20,8 +20,8 @@ const Index = ({ tasks, setTasks, setBulkToggle, loadTasks }) => {
   }
 
   const listItems = () => {
-    return tasks.map((task, index) =>
-      <Draggable draggableId={task.id} index={task.dragPosition} key={task.id}>
+    return tasks.map((task) =>
+      <Draggable draggableId={task.id} index={task.position - 1} key={task.id}>
         {(provided) => (
           <li
             className='list-group-item tasks-list-item'
@@ -34,23 +34,21 @@ const Index = ({ tasks, setTasks, setBulkToggle, loadTasks }) => {
               task={task}
               handleRowCheckbox={handleRowCheckbox}
             />
-            id:{task.id},
-            pos:{task.position},
-            list_pos:{task.dragPosition},
-             {task.title}
+            {task.title}
             <span className='link-wrap'>
-            <RemoveLink task={task} deleteListItem={onDeleteTask} />
-          </span>
+              <RemoveLink task={task} deleteListItem={onDeleteTask} />
+            </span>
           </li>
         )}
-
-
       </Draggable>
     )
   }
 
   const onDeleteTask = (taskId) => {
     const newTasksArray = tasks.filter(task => task.id !== taskId)
+    newTasksArray.forEach((task, i) => {
+      task.position = i + 1
+    })
     setTasks(newTasksArray)
   }
 
@@ -68,56 +66,49 @@ const Index = ({ tasks, setTasks, setBulkToggle, loadTasks }) => {
     })
 
     const updatedTasks = tasks.filter((task) => !deletedTasksIds.includes(task.id))
+    updatedTasks.forEach((task, i) => {
+      task.position = i + 1
+    })
+
     setTasks([...updatedTasks])
     setBulkToggle(false)
   }
-  const onDragEnd = (result) => {
-    if(result.destination !== null){
-      const taskId = result.draggableId
-      const currentTaskPosition = result.source.index
-      const targetPosition = result.destination.index
-      // console.log('task id: ' + taskId + ', oldPosition: ' + currentTaskPosition + ', new position: ' + targetPosition)
 
-
-      const dragTask = {...tasks.find(t => t.id === taskId)}
-      const newTasks = tasks.map(t => ({ ...t }))
-      newTasks.splice(dragTask.dragPosition, 1)
-      newTasks.splice(targetPosition, 0, dragTask)
-      newTasks.forEach((t, i) => {
-        t.dragPosition = i
-      })
-
-      const taskToChange = tasks.find(t => t.dragPosition === targetPosition)
-
-      // for backend
-      const newPosition = taskToChange.position
-
-
-      let tasksPositionsArray = newTasks.map(t => t.position)
-      tasksPositionsArray.sort((a, b) => a - b)
-
-      const newTasks2 = newTasks.map((t, i) => ({...t, position: tasksPositionsArray[i]}))
-      setTasks(newTasks2)
-      console.log('id=' + taskToChange.id + ', pos=' + newPosition)
-      makeRequest({
-        url: 'http://localhost:3000/api/task_update_positions',
-        method: 'put',
-        data: { id: taskId, position: newPosition }
-      })
-    }
+  const reorderTasks = (indexFrom, indexWhere) => {
+    const newTasks = [...tasks]
+    newTasks.splice(indexFrom, 1)
+    newTasks.splice(indexWhere, 0, { ...tasks[indexFrom] })
+    newTasks.forEach((t, i) => {
+      t.position = i + 1
+    })
+    return newTasks
   }
+
+  const onDragEnd = (result) => {
+    if (result.destination === null || result.source.index === result.destination.index) {
+      return
+    }
+
+    setTasks(reorderTasks(result.source.index, result.destination.index))
+    makeRequest({
+      url: 'http://localhost:3000/api/task_update_positions',
+      method: 'put',
+      data: { id: result.draggableId, position: result.destination.index + 1 }
+    })
+  }
+
   return (
     <div className='tasks-list-wrap'>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId='droppable1'>
           {(provided) => (
-            <ul
+            <div
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               <ul className='list-group tasks-list mb-3'>{listItems()}</ul>
               {provided.placeholder}
-            </ul>
+            </div>
           )}
         </Droppable>
       </DragDropContext>

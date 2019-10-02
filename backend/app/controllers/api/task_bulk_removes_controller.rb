@@ -3,7 +3,7 @@
 module Api
   class TaskBulkRemovesController < Api::ApiController
     def destroy
-      Task.where(id: destroy_params[:tasks]).delete_all
+      Task.where(id: destroy_params[:tasks]).destroy_all
       render json: {}
     end
 

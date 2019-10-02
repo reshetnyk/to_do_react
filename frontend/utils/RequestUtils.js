@@ -5,7 +5,7 @@ import fetch from 'isomorphic-unfetch'
 // params.method
 
 export const makeRequest = params => {
-  const url = params.url || ''
+  const url = params.url
   const requestParams = {
     method: params.method || 'get',
     headers: {

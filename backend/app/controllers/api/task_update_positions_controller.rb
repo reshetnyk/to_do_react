@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Api
   class TaskUpdatePositionsController < Api::ApiController
     def update
-      u_params = update_params
-      task = Task.find(u_params[:id])
-      task.insert_at(u_params[:position])
+      task = Task.find(update_params[:id])
+      task.insert_at(update_params[:position])
       render json: {}
     end
 
