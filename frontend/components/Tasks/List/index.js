@@ -3,9 +3,9 @@ import { makeRequest } from '../../../utils/RequestUtils'
 import RowCheckbox from './RowCheckbox'
 import './index.css'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import EditableLabel from './EditableLabel'
+import TitleField from './TitleField'
 
-const Index = ({ tasks, setTasks, setBulkToggle, loadTasks }) => {
+const Index = ({ tasks, setTasks, setBulkToggle }) => {
   const handleRowCheckbox = (t) => {
     const updatedTasks = tasks.map(taskItem => {
       if (taskItem.id === t.id) {
@@ -18,15 +18,6 @@ const Index = ({ tasks, setTasks, setBulkToggle, loadTasks }) => {
     })
 
     setTasks(updatedTasks)
-  }
-  const setTitle = (task, newTitle) => {
-    const newTasks = tasks.map(t => {
-      if(task.id === t.id){
-        return {...t, title: newTitle}
-      }
-      return {...t}
-    })
-    setTasks(newTasks)
   }
 
   const listItems = () => {
@@ -44,8 +35,7 @@ const Index = ({ tasks, setTasks, setBulkToggle, loadTasks }) => {
               task={task}
               handleRowCheckbox={handleRowCheckbox}
             />
-            <EditableLabel task={task} setTitle={setTitle} />
-            {/*{task.title}*/}
+            <TitleField task={task} tasks={tasks} setTasks={setTasks} />
             <span className='link-wrap'>
               <RemoveLink task={task} deleteListItem={onDeleteTask} />
             </span>

@@ -22,9 +22,18 @@ module Api
       render json: {}
     end
 
+    def update
+      Task.update(params[:id], update_params)
+      render json: {}
+    end
+
     private
 
     def create_params
+      params.permit(:title)
+    end
+
+    def update_params
       params.permit(:title)
     end
   end

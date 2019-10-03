@@ -16,7 +16,7 @@ const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
         method: 'post',
         data: { title: taskTitle }
       }).then(data => {
-        setTasks([...tasks, { ...data, checked: false }])
+        setTasks([...tasks, { ...data, checked: false, editing: false }])
       })
     }
   }

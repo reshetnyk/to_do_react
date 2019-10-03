@@ -13,7 +13,7 @@ const Index = ({ task, deleteListItem }) => {
   }
 
   return (
-    <span onClick={linkOnClick} className='fakeLink'>delete</span>
+    <span onClick={linkOnClick} className='tasks__delete-link'>delete</span>
   )
 }
 
