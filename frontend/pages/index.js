@@ -1,13 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Tasks from '../components/Tasks'
 import { resetServerContext } from 'react-beautiful-dnd'
+import Router from 'next/router'
+import { useEffect } from 'react'
 
 const IndexPage = () => {
   resetServerContext()
+
+  useEffect(() => {
+    Router.push('/tasks')
+  })
+
   return (
-    <div className='container'>
-      <Tasks />
-    </div>
+    <>
+    </>
   )
 }
 
