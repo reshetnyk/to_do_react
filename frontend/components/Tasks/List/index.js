@@ -4,8 +4,9 @@ import RowCheckbox from './RowCheckbox'
 import './index.css'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import TitleField from './TitleField'
+import CompleteButton from './CompleteButton'
 
-const Index = ({ tasks, setTasks, setBulkToggle }) => {
+const List = ({ tasks, setTasks, setBulkToggle }) => {
   const handleRowCheckbox = (t) => {
     const updatedTasks = tasks.map(taskItem => {
       if (taskItem.id === t.id) {
@@ -25,7 +26,7 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
       <Draggable draggableId={task.id} index={task.position - 1} key={task.id}>
         {(provided) => (
           <li
-            className='list-group-item tasks-list-item'
+            className={'list-group-item tasks-list-item' + (task.status === 'completed' ? ' tasks-list-item--completed' : '')}
             onClick={() => handleRowCheckbox(task)}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -113,8 +114,12 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
           )}
         </Droppable>
       </DragDropContext>
-      <button onClick={onDeleteAll} className='float-right btn btn-secondary'>delete all</button>
+      <div className='float-right'>
+        <CompleteButton tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} newStatus='completed' text='Complete' className='btn btn-success mr-2' />
+        <CompleteButton tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} newStatus='uncompleted' text='Uncomplete' className='btn btn-warning mr-2' />
+        <button onClick={onDeleteAll} className='btn btn-danger'>Delete</button>
+      </div>
     </div>
   )
 }
-export default Index
+export default List

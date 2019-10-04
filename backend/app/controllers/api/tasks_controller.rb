@@ -34,7 +34,7 @@ module Api
     end
 
     def update_params
-      params.permit(:title)
+      params.permit(:title, :status)
     end
   end
 end

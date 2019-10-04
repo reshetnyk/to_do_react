@@ -9,3 +9,6 @@
   cursor: pointer;
   user-select: none;
 }
+.tasks-list-item--completed{
+  opacity: .5;
+}

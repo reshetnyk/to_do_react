@@ -3,7 +3,7 @@ import List from './List'
 import Form from './Form'
 import { makeRequest } from '../../utils/RequestUtils'
 
-const index = () => {
+const Tasks = () => {
   const [tasks, setTasks] = useState([])
   const [bulkToggle, setBulkToggle] = useState(false)
 
@@ -34,4 +34,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Tasks

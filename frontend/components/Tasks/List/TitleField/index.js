@@ -2,7 +2,7 @@ import './index.css'
 import { useState } from 'react'
 import { makeRequest } from '../../../../utils/RequestUtils'
 
-const Index = ({ task, setTasks }) => {
+const TitleField = ({ task, setTasks }) => {
   const [inputValue, setInputValue] = useState(task.title)
 
   const onDoubleClickHandler = (e) => {
@@ -60,4 +60,4 @@ const Index = ({ task, setTasks }) => {
     : <span className='tasks__title-span' onDoubleClick={onDoubleClickHandler} onClick={onClickHandler}>{task.title}</span>
 }
 
-export default Index
+export default TitleField

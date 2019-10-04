@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     resources :tasks
     resource :task_bulk_removes, only: :destroy
     resource :task_update_positions, only: :update
+    resource :task_update_completes, only: :update
   end
 end

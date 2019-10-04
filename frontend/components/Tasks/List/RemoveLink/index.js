@@ -1,7 +1,7 @@
 import { makeRequest } from '../../../../utils/RequestUtils'
 import './index.css'
 
-const Index = ({ task, deleteListItem }) => {
+const RemoveLink = ({ task, deleteListItem }) => {
   const linkOnClick = (e) => {
     e.stopPropagation()
     makeRequest({
@@ -17,4 +17,4 @@ const Index = ({ task, deleteListItem }) => {
   )
 }
 
-export default Index
+export default RemoveLink

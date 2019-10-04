@@ -3,7 +3,7 @@ import { makeRequest } from '../../../utils/RequestUtils'
 import BulkToggleCheckbox from './BulkToggleCheckbox'
 import './index.css'
 
-const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
+const Form = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
   const [inputValue, setInputValue] = useState('')
 
   const formOnSubmit = (e) => {
@@ -52,4 +52,4 @@ const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
     </form>
   )
 }
-export default Index
+export default Form
