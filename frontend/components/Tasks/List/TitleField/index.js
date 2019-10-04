@@ -2,17 +2,13 @@ import './index.css'
 import { useState } from 'react'
 import { makeRequest } from '../../../../utils/RequestUtils'
 
-const Index = ({ task, tasks, setTasks }) => {
+const Index = ({ task, setTasks }) => {
   const [inputValue, setInputValue] = useState(task.title)
 
-  const startEditing = () => {
+  const onDoubleClickHandler = (e) => {
     if (!task.editing) {
       updateTask({ ...task, editing: true })
     }
-  }
-
-  const onDoubleClickHandler = (e) => {
-    startEditing()
   }
 
   const onClickHandler = (e) => {
@@ -20,13 +16,14 @@ const Index = ({ task, tasks, setTasks }) => {
   }
 
   const updateTask = newTask => {
-    const newTasks = tasks.map(t => {
-      if (t.id === newTask.id) {
-        return newTask
-      }
-      return t
+    setTasks(oldTasks => {
+      return oldTasks.map(t => {
+        if (t.id === newTask.id) {
+          return newTask
+        }
+        return { ...t }
+      })
     })
-    setTasks(newTasks)
   }
 
   const onChangeHandler = (e) => {

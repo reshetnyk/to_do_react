@@ -35,7 +35,7 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
               task={task}
               handleRowCheckbox={handleRowCheckbox}
             />
-            <TitleField task={task} tasks={tasks} setTasks={setTasks} />
+            <TitleField task={task} setTasks={setTasks} />
             <span className='link-wrap'>
               <RemoveLink task={task} deleteListItem={onDeleteTask} />
             </span>
