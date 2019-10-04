@@ -1,4 +1,6 @@
-.fakeLink{
-  text-decoration: underline;
+.tasks__delete-link{
   cursor: pointer;
+}
+.tasks__delete-link:hover{
+  text-decoration: underline;
 }
