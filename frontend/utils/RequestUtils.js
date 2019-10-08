@@ -11,7 +11,8 @@ export const makeRequest = params => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
-    }
+    },
+    credentials: 'include'
   }
 
   if (requestParams.method.toLowerCase() !== 'get') {

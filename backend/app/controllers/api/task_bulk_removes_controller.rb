@@ -2,8 +2,11 @@
 
 module Api
   class TaskBulkRemovesController < Api::ApiController
+    before_action :authentication
+
     def destroy
-      Task.where(id: destroy_params[:tasks]).destroy_all
+      # Task.where(user_id: current_user.id, id: destroy_params[:tasks])
+      current_user.tasks.where(id: destroy_params[:tasks]).destroy_all
       render json: {}
     end
 

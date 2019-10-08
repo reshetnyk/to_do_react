@@ -36,7 +36,7 @@ const List = ({ tasks, setTasks, setBulkToggle }) => {
               task={task}
               handleRowCheckbox={handleRowCheckbox}
             />
-            <TitleField task={task} setTasks={setTasks} />
+            <TitleField task={task} setTasks={setTasks} />_index:_{task.position - 1}_,id:_{task.id}_
             <span className='link-wrap'>
               <RemoveLink task={task} deleteListItem={onDeleteTask} />
             </span>

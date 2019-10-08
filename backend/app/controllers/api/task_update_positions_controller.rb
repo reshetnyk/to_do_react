@@ -2,8 +2,10 @@
 
 module Api
   class TaskUpdatePositionsController < Api::ApiController
+    before_action :authentication
+
     def update
-      task = Task.find(update_params[:id])
+      task = current_user.tasks.find(update_params[:id])
       task.insert_at(update_params[:position])
       render json: {}
     end
