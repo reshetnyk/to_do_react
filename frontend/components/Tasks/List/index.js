@@ -5,8 +5,13 @@ import './index.css'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import TitleField from './TitleField'
 import CompleteButton from './CompleteButton'
+import UserContext from '../../../context/UserContext'
+import { useContext } from 'react'
+import Router from 'next/router'
 
 const List = ({ tasks, setTasks, setBulkToggle }) => {
+  const { setAuthenticated } = useContext(UserContext)
+
   const handleRowCheckbox = (t) => {
     const updatedTasks = tasks.map(taskItem => {
       if (taskItem.id === t.id) {
@@ -65,7 +70,15 @@ const List = ({ tasks, setTasks, setBulkToggle }) => {
       url: 'http://localhost:3000/api/task_bulk_removes',
       method: 'delete',
       data: { tasks: deletedTasksIds }
-    })
+    }).then(
+      () => {
+        setAuthenticated(true)
+      },
+      () => {
+        setAuthenticated(false)
+        Router.push('/users/sign_in')
+      }
+    )
 
     const updatedTasks = tasks.filter((task) => !deletedTasksIds.includes(task.id))
     updatedTasks.forEach((task, i) => {
@@ -96,7 +109,7 @@ const List = ({ tasks, setTasks, setBulkToggle }) => {
       url: 'http://localhost:3000/api/task_update_positions',
       method: 'put',
       data: { id: result.draggableId, position: result.destination.index + 1 }
-    })
+    }, setAuthenticated)
   }
 
   return (

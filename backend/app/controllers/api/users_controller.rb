@@ -3,16 +3,32 @@
 module Api
   class UsersController < Api::ApiController
     def create
-      user = User.new(
-        email: params[:email],
-        password: params[:password],
-        password_confirmation: params[:password_confirmation]
-      )
+      user = User.find_by(email: create_params[:email])
+      render_email_error && return if user
+      user = User.new(create_params)
       if user.save
-        render json: { user: { email: user.email } }
-      else
-        render json: { errors: user.errors }
+        render json: {}
+      elsif user.errors[:password_confirmation]
+        render_pass_error && return
       end
+    end
+
+    private
+
+    def render_email_error
+      render json: { errors: { email: ['Such email is already taken.'] } }
+    end
+
+    def render_pass_error
+      render json: {
+        errors: {
+          password_confirmation: ['Passwords haven\'t matched.']
+        }
+      }
+    end
+
+    def create_params
+      params.permit(:email, :password, :password_confirmation)
     end
   end
 end

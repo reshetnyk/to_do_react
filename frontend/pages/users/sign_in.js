@@ -1,10 +1,10 @@
 import Layout from '../../components/Layout'
-import Form from '../../components/SignIn/Form'
+import SignInForm from '../../components/SignIn/Form'
 
 const SignInPage = () => {
   return (
     <Layout>
-      <Form />
+      <SignInForm />
     </Layout>
   )
 }

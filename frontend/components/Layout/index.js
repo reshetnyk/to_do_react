@@ -1,16 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Navigation from '../Navigation'
-import { resetServerContext } from 'react-beautiful-dnd'
-
+import UserProvider from '../UserProvider'
 const Layout = (props) => {
-  resetServerContext()
   return (
-    <>
+    <UserProvider>
       <Navigation />
       <div className='container'>
         {props.children}
       </div>
-    </>
+    </UserProvider>
   )
 }
 
