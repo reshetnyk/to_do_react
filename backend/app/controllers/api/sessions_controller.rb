@@ -3,17 +3,18 @@
 module Api
   class SessionsController < Api::ApiController
     include ActionController::Cookies
+    include JWT
+
+    skip_before_action :authentication, only: :create
 
     def create
       user = User.find_by(email: create_params[:email])
-      if !user
-        render json: { errors: { email: ['Email doesn\'t exist.'] } },
-               status: 400
-      elsif user.authenticate(create_params[:password])
+      if user && user.authenticate(create_params[:password])
         put_token(user)
-        render json: { user: { email: user.email } }, status: 200
+        render json: { user: { email: user.email } }
       else
-        render json: { errors: { password: ['Wrong password.'] } }, status: 400
+        render json: { errors: {auth: ['Bad email or password']} },
+               status: 400
       end
     end
 
@@ -29,7 +30,7 @@ module Api
     end
 
     def put_token(user)
-      token = JsonWebToken.encode(
+      token = encodeJWT(
         user_id: user.id,
         exp: DateTime.now + 7.days
       )

@@ -1,6 +1,7 @@
 import { makeRequest } from '../../../utils/RequestUtils'
 import { useState } from 'react'
 import Router from 'next/router'
+import cn from 'classnames'
 
 const Form = () => {
   const [emailInput, setEmailInput] = useState('')
@@ -29,22 +30,24 @@ const Form = () => {
     })
   }
 
-  const renderEmailErrors = () => {
-    if (errors.email) {
-      return errors.email.map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
+  const clearErrors = (field) => {
+    if (errors[field] && errors[field].length > 0) {
+      const newErrors = { ...errors }
+      newErrors[field] = null
+      setErrors(newErrors)
     }
   }
 
-  const renderPasswordErrors = () => {
-    if (errors.password) {
-      return errors.password.map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
+  const renderValidationErrors = (field) => {
+    if (errors[field]) {
+      return errors[field].map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
     }
   }
 
-  const renderPasswordConfirmationErrors = () => {
-    if (errors.password_confirmation) {
-      return errors.password_confirmation.map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
-    }
+  const inputStyles = (invalidCondition) => cn('form-control', { 'is-invalid': invalidCondition })
+  const onInputChangeHandler = (e, setFunc, field) => {
+    setFunc(e.target.value)
+    clearErrors(field)
   }
 
   return (
@@ -53,39 +56,37 @@ const Form = () => {
         <div className='form-group'>
           <label htmlFor='email'>Email address</label>
           <input
-            type='email'
-            className={errors.email ? 'form-control is-invalid' : 'form-control '}
+            className={inputStyles(errors.email)}
             id='email'
-            aria-describedby='emailHelp'
             placeholder='Enter email'
             value={emailInput}
-            onChange={e => setEmailInput(e.target.value)}
+            onChange={(e) => onInputChangeHandler(e, setEmailInput, 'email')}
           />
-          {renderEmailErrors()}
+          {renderValidationErrors('email')}
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
             type='password'
-            className={errors.password ? 'form-control is-invalid' : 'form-control '}
+            className={inputStyles(errors.password)}
             id='password'
             placeholder='Password'
             value={passInput}
-            onChange={e => setPassInput(e.target.value)}
+            onChange={(e) => onInputChangeHandler(e, setPassInput, 'password')}
           />
-          {renderPasswordErrors()}
+          {renderValidationErrors('password')}
         </div>
         <div className='form-group'>
           <label htmlFor='confirmPassword'>Confirm password</label>
           <input
             type='password'
-            className={errors.password_confirmation ? 'form-control is-invalid' : 'form-control '}
+            className={inputStyles(errors.password_confirmation)}
             id='confirmPassword'
             placeholder='Password'
             value={confirmPassInput}
-            onChange={e => setConfirmPassInput(e.target.value)}
+            onChange={(e) => onInputChangeHandler(e, setConfirmPassInput, 'password_confirmation')}
           />
-          {renderPasswordConfirmationErrors()}
+          {renderValidationErrors('password_confirmation')}
         </div>
         <button type='submit' className='btn btn-primary float-right'>Sign up</button>
       </form>

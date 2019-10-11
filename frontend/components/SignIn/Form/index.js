@@ -2,6 +2,7 @@ import { makeRequest } from '../../../utils/RequestUtils'
 import { useState, useContext } from 'react'
 import Router from 'next/router'
 import UserContext from '../../../context/UserContext'
+import cn from 'classnames'
 
 const Form = () => {
   const [emailInput, setEmailInput] = useState('')
@@ -27,21 +28,27 @@ const Form = () => {
         setErrors(response.errors)
         setAuthenticated(false)
         setPassInput('')
+        setEmailInput('')
       }
     })
   }
 
-  const renderEmailErrors = () => {
-    if (errors.email) {
-      return errors.email.map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
+  const renderValidationErrors = (field) => {
+    if (errors[field]) {
+      return errors[field].map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
     }
   }
 
-  const renderPasswordErrors = () => {
-    if (errors.password) {
-      return errors.password.map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
-    }
+  const clearErrors = () => {
+    if (errors.auth && errors.auth.length > 0) setErrors({})
   }
+
+  const onInputChangeHandler = (e, setFunc) => {
+    setFunc(e.target.value)
+    clearErrors()
+  }
+
+  const inputStyles = cn('form-control', { 'is-invalid': errors.auth })
 
   return (
     <div className='row justify-content-center'>
@@ -49,29 +56,24 @@ const Form = () => {
         <div className='form-group'>
           <label htmlFor='email'>Email address</label>
           <input
-            type='email'
-            className={errors.email ? 'form-control is-invalid' : 'form-control '}
+            className={inputStyles}
             id='email'
-            aria-describedby='emailHelp'
             placeholder='Enter email'
             value={emailInput}
-            onChange={e => setEmailInput(e.target.value)}
-            required
+            onChange={(e) => onInputChangeHandler(e, setEmailInput)}
           />
-          {renderEmailErrors()}
+          {renderValidationErrors('auth')}
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
           <input
             type='password'
-            className={errors.password ? 'form-control is-invalid' : 'form-control '}
+            className={inputStyles}
             id='password'
             placeholder='Password'
             value={passInput}
-            onChange={e => setPassInput(e.target.value)}
-            required
+            onChange={(e) => onInputChangeHandler(e, setPassInput)}
           />
-          {renderPasswordErrors()}
         </div>
         <button type='submit' className='btn btn-primary float-right'>Sign in</button>
       </form>
