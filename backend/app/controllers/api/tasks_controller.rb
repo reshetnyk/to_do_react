@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  class TasksController < Api::ApiController
-    before_action :authentication
-
+  class TasksController < ApiController
     def index
       tasks = current_user.tasks.order(:position)
       render json: { tasks: tasks }
@@ -11,10 +9,6 @@ module Api
 
     def create
       task = current_user.tasks.build(create_params)
-      # creationParams = create_params.dup
-      # creationParams[:user_id] = current_user.id
-      # task = Task.new(creationParams)
-
       if task.save
         render json: { id: task.id, title: task.title, position: task.position }
       else
@@ -23,7 +17,6 @@ module Api
     end
 
     def destroy
-      # Task.find_by(user_id: current_user.id, id: params[:id]).destroy
       current_user.tasks.find(params[:id]).destroy
       render json: {}
     end

@@ -5,52 +5,36 @@ import UserContext from '../../context/UserContext'
 const Navigation = () => {
   const { isAuthenticated, email } = useContext(UserContext)
 
-  const renderLogoutLink = () => {
+  const renderLinks = () => {
     if (isAuthenticated) {
       return (
-        <Link href='/users/log_out'>
-          <a className='btn btn-outline-primary'>Log out</a>
-        </Link>
+        <>
+          <Link href='/tasks'>
+            <a className='p-2 text-dark'>Tasks</a>
+          </Link>
+          <Link href='/users/log_out'>
+            <a className='btn btn-outline-primary'>Log out</a>
+          </Link>
+        </>
       )
     }
-  }
-
-  const renderTasksLink = () => {
-    if (isAuthenticated) {
-      return (
-        <Link href='/tasks'>
-          <a className='p-2 text-dark'>Tasks</a>
-        </Link>
-      )
-    }
-  }
-
-  const renderSigninLink = () => {
-    if (!isAuthenticated) {
-      return (
-        <Link href='/users/sign_in'>
-          <a className='btn btn-outline-primary'>Sign in</a>
-        </Link>
-      )
-    }
-  }
-
-  const renderSignUpLink = () => {
-    if (!isAuthenticated) {
-      return (
+    return (
+      <>
         <Link href='/users/sign_up'>
           <a className='p-2 text-dark'>Sign up</a>
         </Link>
-      )
-    }
+        <Link href='/users/sign_in'>
+          <a className='btn btn-outline-primary'>Sign in</a>
+        </Link>
+      </>
+    )
   }
 
   const renderEmail = () => {
-    if (email.length > 0) {
+    if (email) {
       return 'Signed as ' + email
-    } else {
-      return 'Shit'
     }
+    return 'Shit'
   }
 
   return (
@@ -59,10 +43,7 @@ const Navigation = () => {
     >
       <h5 className='my-0 mr-md-auto font-weight-normal'>{renderEmail()}</h5>
       <nav className='my-2 my-md-0 mr-md-3'>
-        {renderTasksLink()}
-        {renderSignUpLink()}
-        {renderSigninLink()}
-        {renderLogoutLink()}
+        {renderLinks()}
       </nav>
     </div>
   )

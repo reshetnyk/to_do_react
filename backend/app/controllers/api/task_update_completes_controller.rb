@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  class TaskUpdateCompletesController < Api::ApiController
-    before_action :authentication
-
+  class TaskUpdateCompletesController < ApiController
     def update
       current_user.tasks.where(id: update_params[:ids])
                   .update_all(status: update_params[:status])

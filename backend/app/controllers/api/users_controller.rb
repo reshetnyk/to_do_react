@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  class UsersController < Api::ApiController
+  class UsersController < ApiController
     skip_before_action :authentication
 
     def create

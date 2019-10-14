@@ -8,20 +8,16 @@ import Router from 'next/router'
 const Tasks = () => {
   const [tasks, setTasks] = useState([])
   const [bulkToggle, setBulkToggle] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const { setAuthenticated } = useContext(UserContext)
 
   const loadTasks = () => {
     makeRequest({ url: 'http://localhost:3000/api/tasks' })
       .then(
         data => {
-          console.log('data')
-          console.log(data)
           const newTasks = data.tasks.map(task => {
             return { ...task, checked: false, editing: false }
           })
           setTasks(newTasks)
-          setIsLoading(false)
           setAuthenticated(true)
         },
         () => {
@@ -33,21 +29,17 @@ const Tasks = () => {
     loadTasks()
   }, [])
 
-  if (isLoading) {
-    return <></>
-  } else {
-    return (
-      <div>
-        <Form
-          tasks={tasks}
-          setTasks={setTasks}
-          bulkToggle={bulkToggle}
-          setBulkToggle={setBulkToggle}
-        />
-        <List tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} />
-      </div>
-    )
-  }
+  return (
+    <div>
+      <Form
+        tasks={tasks}
+        setTasks={setTasks}
+        bulkToggle={bulkToggle}
+        setBulkToggle={setBulkToggle}
+      />
+      <List tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} />
+    </div>
+  )
 }
 
 export default Tasks
