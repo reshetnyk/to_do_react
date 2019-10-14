@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 module Api
-  class TasksController < Api::ApiController
+  class TasksController < ApiController
     def index
-      tasks = Task.order(:position)
+      tasks = current_user.tasks.order(:position)
       render json: { tasks: tasks }
     end
 
     def create
-      task = Task.new(create_params)
-
+      task = current_user.tasks.build(create_params)
       if task.save
         render json: { id: task.id, title: task.title, position: task.position }
       else
@@ -18,12 +17,12 @@ module Api
     end
 
     def destroy
-      Task.destroy(params[:id])
+      current_user.tasks.find(params[:id]).destroy
       render json: {}
     end
 
     def update
-      Task.update(params[:id], update_params)
+      current_user.tasks.find(params[:id]).update(update_params)
       render json: {}
     end
 
@@ -34,7 +33,7 @@ module Api
     end
 
     def update_params
-      params.permit(:title)
+      params.permit(:title, :status)
     end
   end
 end

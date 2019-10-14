@@ -4,8 +4,14 @@ import RowCheckbox from './RowCheckbox'
 import './index.css'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import TitleField from './TitleField'
+import CompleteButton from './CompleteButton'
+import UserContext from '../../../context/UserContext'
+import { useContext } from 'react'
+import Router from 'next/router'
 
-const Index = ({ tasks, setTasks, setBulkToggle }) => {
+const List = ({ tasks, setTasks, setBulkToggle }) => {
+  const { setAuthenticated } = useContext(UserContext)
+
   const handleRowCheckbox = (t) => {
     const updatedTasks = tasks.map(taskItem => {
       if (taskItem.id === t.id) {
@@ -25,7 +31,7 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
       <Draggable draggableId={task.id} index={task.position - 1} key={task.id}>
         {(provided) => (
           <li
-            className='list-group-item tasks-list-item'
+            className={'list-group-item tasks-list-item' + (task.status === 'completed' ? ' tasks-list-item--completed' : '')}
             onClick={() => handleRowCheckbox(task)}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -35,7 +41,7 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
               task={task}
               handleRowCheckbox={handleRowCheckbox}
             />
-            <TitleField task={task} setTasks={setTasks} />
+            <TitleField task={task} setTasks={setTasks} />_index:_{task.position - 1}_,id:_{task.id}_
             <span className='link-wrap'>
               <RemoveLink task={task} deleteListItem={onDeleteTask} />
             </span>
@@ -64,7 +70,15 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
       url: 'http://localhost:3000/api/task_bulk_removes',
       method: 'delete',
       data: { tasks: deletedTasksIds }
-    })
+    }).then(
+      () => {
+        setAuthenticated(true)
+      },
+      () => {
+        setAuthenticated(false)
+        Router.push('/users/sign_in')
+      }
+    )
 
     const updatedTasks = tasks.filter((task) => !deletedTasksIds.includes(task.id))
     updatedTasks.forEach((task, i) => {
@@ -95,7 +109,7 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
       url: 'http://localhost:3000/api/task_update_positions',
       method: 'put',
       data: { id: result.draggableId, position: result.destination.index + 1 }
-    })
+    }, setAuthenticated)
   }
 
   return (
@@ -113,8 +127,12 @@ const Index = ({ tasks, setTasks, setBulkToggle }) => {
           )}
         </Droppable>
       </DragDropContext>
-      <button onClick={onDeleteAll} className='float-right btn btn-secondary'>delete all</button>
+      <div className='float-right'>
+        <CompleteButton tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} newStatus='completed' text='Complete' className='btn btn-success mr-2' />
+        <CompleteButton tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} newStatus='uncompleted' text='Uncomplete' className='btn btn-warning mr-2' />
+        <button onClick={onDeleteAll} className='btn btn-danger'>Delete</button>
+      </div>
     </div>
   )
 }
-export default Index
+export default List

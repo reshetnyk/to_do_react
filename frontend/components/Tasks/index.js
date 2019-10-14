@@ -1,22 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import List from './List'
 import Form from './Form'
 import { makeRequest } from '../../utils/RequestUtils'
+import UserContext from '../../context/UserContext'
+import Router from 'next/router'
 
-const index = () => {
+const Tasks = () => {
   const [tasks, setTasks] = useState([])
   const [bulkToggle, setBulkToggle] = useState(false)
+  const { setAuthenticated } = useContext(UserContext)
 
   const loadTasks = () => {
     makeRequest({ url: 'http://localhost:3000/api/tasks' })
-      .then(data => {
-        const newTasks = data.tasks.map((task, index) => {
-          return { ...task, checked: false, editing: false }
+      .then(
+        data => {
+          const newTasks = data.tasks.map(task => {
+            return { ...task, checked: false, editing: false }
+          })
+          setTasks(newTasks)
+          setAuthenticated(true)
+        },
+        () => {
+          setAuthenticated(false)
+          Router.push('/users/sign_in')
         })
-        setTasks(newTasks)
-      })
   }
-
   useEffect(() => {
     loadTasks()
   }, [])
@@ -29,9 +37,9 @@ const index = () => {
         bulkToggle={bulkToggle}
         setBulkToggle={setBulkToggle}
       />
-      <List tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} loadTasks={loadTasks} />
+      <List tasks={tasks} setTasks={setTasks} setBulkToggle={setBulkToggle} />
     </div>
   )
 }
 
-export default index
+export default Tasks

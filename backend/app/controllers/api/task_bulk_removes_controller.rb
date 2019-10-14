@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Api
-  class TaskBulkRemovesController < Api::ApiController
+  class TaskBulkRemovesController < ApiController
     def destroy
-      Task.where(id: destroy_params[:tasks]).destroy_all
+      current_user.tasks.where(id: destroy_params[:tasks]).destroy_all
       render json: {}
     end
 

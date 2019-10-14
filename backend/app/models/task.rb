@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
-  acts_as_list
+  STATUS_OPTIONS = [:uncompleted, :completed]
+
+  validates :title, presence: true, length: { minimum: 2, maximum: 100 }
+  validates :status, presence: true
+
+  acts_as_list scope: :user
+  belongs_to :user
+  enum status: STATUS_OPTIONS
 end

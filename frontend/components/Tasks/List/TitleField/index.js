@@ -1,9 +1,12 @@
 import './index.css'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { makeRequest } from '../../../../utils/RequestUtils'
+import UserContext from '../../../../context/UserContext'
+import Router from 'next/router'
 
-const Index = ({ task, setTasks }) => {
+const TitleField = ({ task, setTasks }) => {
   const [inputValue, setInputValue] = useState(task.title)
+  const { setAuthenticated } = useContext(UserContext)
 
   const onDoubleClickHandler = (e) => {
     if (!task.editing) {
@@ -36,7 +39,15 @@ const Index = ({ task, setTasks }) => {
       url: 'http://localhost:3000/api/tasks/' + task.id,
       method: 'put',
       data: { title: inputValue }
-    })
+    }).then(
+      () => {
+        setAuthenticated(true)
+      },
+      () => {
+        setAuthenticated(false)
+        Router.push('/users/sign_in')
+      }
+    )
   }
 
   const cancelEditing = () => {
@@ -60,4 +71,4 @@ const Index = ({ task, setTasks }) => {
     : <span className='tasks__title-span' onDoubleClick={onDoubleClickHandler} onClick={onClickHandler}>{task.title}</span>
 }
 
-export default Index
+export default TitleField

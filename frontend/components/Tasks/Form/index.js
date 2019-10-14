@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { makeRequest } from '../../../utils/RequestUtils'
 import BulkToggleCheckbox from './BulkToggleCheckbox'
 import './index.css'
+import UserContext from '../../../context/UserContext'
+import Router from 'next/router'
 
-const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
+const Form = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
   const [inputValue, setInputValue] = useState('')
+  const { setAuthenticated } = useContext(UserContext)
 
   const formOnSubmit = (e) => {
     e.preventDefault()
@@ -15,9 +18,16 @@ const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
         url: 'http://localhost:3000/api/tasks',
         method: 'post',
         data: { title: taskTitle }
-      }).then(data => {
-        setTasks([...tasks, { ...data, checked: false, editing: false }])
-      })
+      }).then(
+        data => {
+          setTasks([...tasks, { ...data, checked: false, editing: false }])
+          setAuthenticated(true)
+        },
+        () => {
+          setAuthenticated(false)
+          Router.push('/users/sign_in')
+        }
+      )
     }
   }
 
@@ -52,4 +62,4 @@ const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
     </form>
   )
 }
-export default Index
+export default Form

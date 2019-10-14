@@ -1,6 +1,6 @@
 import './index.css'
 
-const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
+const BulkToggleCheckbox = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
   const selectAllOnChange = () => {
     const oldValue = bulkToggle
     setBulkToggle(!oldValue)
@@ -19,4 +19,4 @@ const Index = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
   )
 }
 
-export default Index
+export default BulkToggleCheckbox

@@ -1,4 +1,4 @@
-const Index = ({ task, handleRowCheckbox }) => {
+const RowCheckbox = ({ task, handleRowCheckbox }) => {
   return (
     <input
       type='checkbox'
@@ -9,4 +9,4 @@ const Index = ({ task, handleRowCheckbox }) => {
   )
 }
 
-export default Index
+export default RowCheckbox
