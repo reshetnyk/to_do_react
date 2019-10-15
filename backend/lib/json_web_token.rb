@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JsonWebToken
   # Encodes and signs JWT Payload with expiration
   def self.encode(payload)
@@ -18,7 +20,7 @@ class JsonWebToken
   # Default options to be encoded in the token
   def self.meta
     {
-        exp: 30.days.from_now.to_i
+      exp: 30.days.from_now.to_i
     }
   end
 

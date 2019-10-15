@@ -15,6 +15,7 @@ module Api
       if !payload || !JsonWebToken.valid_payload(payload)
         return render_unauthorized
       end
+
       render_unauthorized unless current_user
     end
 
@@ -23,6 +24,7 @@ module Api
     def payload
       token = cookies.signed[:jwt]
       return unless token
+
       JsonWebToken.decode(token)
     end
 

@@ -7,6 +7,7 @@ module Api
     def create
       user = User.new(create_params)
       if user.save
+        UserMailer.confirmation_letter(user).deliver
         render json: {}
       else
         render json: { errors: user.errors }

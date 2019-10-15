@@ -4,9 +4,9 @@ import Router from 'next/router'
 import cn from 'classnames'
 
 const Form = () => {
-  const [emailInput, setEmailInput] = useState('')
-  const [passInput, setPassInput] = useState('')
-  const [confirmPassInput, setConfirmPassInput] = useState('')
+  const [emailInput, setEmailInput] = useState('olexandr.reshetnyk@gmail.com')
+  const [passInput, setPassInput] = useState('qqqqqq')
+  const [confirmPassInput, setConfirmPassInput] = useState('qqqqqq')
   const [errors, setErrors] = useState([])
 
   const onSubmitHandler = (e) => {

@@ -10,5 +10,6 @@ Rails.application.routes.draw do
     resource :task_update_completes, only: :update
     resource :sessions, only: %i[create destroy]
     resources :users
+    resource :user_confirm_emails, only: :update
   end
 end

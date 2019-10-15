@@ -14,6 +14,13 @@ const UserProvider = ({ children }) => {
       })
     },
 
+    deleteEmail: () => {
+      window.localStorage.removeItem('email')
+      setUser(prevState => {
+        return { ...prevState, email: null }
+      })
+    },
+
     setAuthenticated: (state) => {
       setUser(prevState => {
         return { ...prevState, isAuthenticated: state }

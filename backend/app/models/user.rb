@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
+  before_create :add_confirm_token
 
   validates :email,
             uniqueness: true,
@@ -15,4 +16,21 @@ class User < ApplicationRecord
 
   has_secure_password
   has_many :tasks, -> { order(position: :asc) }
+
+  def confirmed?
+    return true if confirmed_at
+
+    false
+  end
+
+  def activate
+    update_attribute(:confirmed_at, DateTime.now)
+    update_attribute(:confirm_token, nil)
+  end
+
+  private
+
+  def add_confirm_token
+    self.confirm_token = SecureRandom.urlsafe_base64.to_s
+  end
 end

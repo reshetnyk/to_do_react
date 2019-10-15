@@ -3,12 +3,14 @@ import { useState, useContext } from 'react'
 import Router from 'next/router'
 import UserContext from '../../../context/UserContext'
 import cn from 'classnames'
+import FlashContext from '../../../context/FlashContext'
 
 const Form = () => {
   const [emailInput, setEmailInput] = useState('')
   const [passInput, setPassInput] = useState('')
   const [errors, setErrors] = useState([])
   const { setAuthenticated, setEmail } = useContext(UserContext)
+  const { setMessages } = useContext(FlashContext)
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
@@ -20,12 +22,15 @@ const Form = () => {
         password: passInput
       }
     }).then(response => {
-      if (!response.errors) {
+      if (response.ok) {
         setEmail(response.user.email)
         setAuthenticated(true)
         Router.push('/tasks')
       } else {
         setErrors(response.errors)
+        if (response.flash) {
+          setMessages(response.flash)
+        }
         setAuthenticated(false)
         setPassInput('')
         setEmailInput('')
@@ -33,14 +38,14 @@ const Form = () => {
     })
   }
 
-  const renderValidationErrors = (field) => {
-    if (errors[field]) {
-      return errors[field].map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
+  const renderValidationErrors = () => {
+    if (errors && errors.auth) {
+      return errors.auth.map((error, i) => <div className='invalid-feedback' key={i}>{error}</div>)
     }
   }
 
   const clearErrors = () => {
-    if (errors.auth && errors.auth.length > 0) setErrors({})
+    if (errors.auth) setErrors({})
   }
 
   const onInputChangeHandler = (e, setFunc) => {
@@ -48,7 +53,7 @@ const Form = () => {
     clearErrors()
   }
 
-  const inputStyles = cn('form-control', { 'is-invalid': errors.auth })
+  const inputStyles = cn('form-control', { 'is-invalid': errors && errors.auth })
 
   return (
     <div className='row justify-content-center'>
@@ -62,7 +67,7 @@ const Form = () => {
             value={emailInput}
             onChange={(e) => onInputChangeHandler(e, setEmailInput)}
           />
-          {renderValidationErrors('auth')}
+          {renderValidationErrors()}
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>

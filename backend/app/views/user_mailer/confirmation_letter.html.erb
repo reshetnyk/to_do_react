@@ -1,0 +1,4 @@
+Hi <%= @user.email %>,<br>
+<br>
+Thanks for registering! To confirm your registration click the URL below.<br>
+<%= link_to 'confirm', 'http://localhost:4000/users/confirm_email/' + @user.confirm_token %><br>

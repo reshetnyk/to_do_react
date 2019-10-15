@@ -17,6 +17,7 @@ export const makeRequest = (params) => {
 
   return fetch(url, requestParams).then(resp => {
     return new Promise((resolve, reject) => {
+      console.log(resp)
       if (resp.status === 401) {
         reject(null)
       } else {

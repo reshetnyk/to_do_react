@@ -4,7 +4,7 @@ import Router from 'next/router'
 import UserContext from '../../context/UserContext'
 
 const LogOut = () => {
-  const { setAuthenticated, setEmail } = useContext(UserContext)
+  const { setAuthenticated, deleteEmail } = useContext(UserContext)
 
   useEffect(() => {
     makeRequest({
@@ -13,7 +13,7 @@ const LogOut = () => {
     }).then(
       () => {
         setAuthenticated(false)
-        setEmail(null)
+        deleteEmail()
         Router.push('/users/sign_in')
       },
       () => {

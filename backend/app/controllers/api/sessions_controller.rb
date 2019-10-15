@@ -7,13 +7,19 @@ module Api
 
     def create
       user = User.find_by(email: create_params[:email])
-      if user && user.authenticate(create_params[:password])
-        add_cookie(create_user_token(user))
-        render json: { user: { email: user.email } }
-      else
-        render json: { errors: {auth: ['Bad email or password']} },
-               status: 400
+      if user
+        if user.confirmed?
+          if user.authenticate(create_params[:password])
+            add_cookie(create_user_token(user))
+            return render json: { user: { email: user.email } }
+          end
+        else
+          return render json: { flash: [{ msg: 'Email\'s unconfirmed.',
+                                          type: 'warning' }] }, status: 400
+        end
       end
+      render json: { errors: { email: ['Bad email or password'] } },
+             status: 400
     end
 
     def destroy
@@ -28,14 +34,14 @@ module Api
     end
 
     def create_user_token(user)
-      JsonWebToken.encode({user_id: user.id})
+      JsonWebToken.encode(user_id: user.id)
     end
 
     def add_cookie(value)
       cookies.signed[:jwt] = {
-          value: value,
-          expires: DateTime.now + 30.days,
-          httponly: true
+        value: value,
+        expires: DateTime.now + 30.days,
+        httponly: true
       }
     end
   end
