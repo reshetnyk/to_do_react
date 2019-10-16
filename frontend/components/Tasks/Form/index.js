@@ -18,16 +18,17 @@ const Form = ({ tasks, setTasks, bulkToggle, setBulkToggle }) => {
         url: 'http://localhost:3000/api/tasks',
         method: 'post',
         data: { title: taskTitle }
-      }).then(
-        data => {
-          setTasks([...tasks, { ...data, checked: false, editing: false }])
-          setAuthenticated(true)
-        },
-        () => {
+      }).then(resp => {
+        if (resp.status === 401) {
           setAuthenticated(false)
           Router.push('/users/sign_in')
+        } else if (resp.ok) {
+          resp.json().then(data => {
+            setTasks([...tasks, { ...data, checked: false, editing: false }])
+            setAuthenticated(true)
+          })
         }
-      )
+      })
     }
   }
 

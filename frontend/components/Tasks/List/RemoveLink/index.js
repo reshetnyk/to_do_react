@@ -13,15 +13,14 @@ const RemoveLink = ({ task, deleteListItem }) => {
       url: 'http://localhost:3000/api/tasks/' + task.id,
       method: 'delete',
       data: null
-    }).then(
-      () => {
-        setAuthenticated(true)
-      },
-      () => {
+    }).then(resp => {
+      if (resp.status === 401) {
         setAuthenticated(false)
         Router.push('/users/sign_in')
+      } else if (resp.ok) {
+        setAuthenticated(true)
       }
-    )
+    })
     deleteListItem(task.id)
   }
 

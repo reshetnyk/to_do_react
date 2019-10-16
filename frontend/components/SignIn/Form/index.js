@@ -21,20 +21,27 @@ const Form = () => {
         email: emailInput,
         password: passInput
       }
-    }).then(response => {
-      if (response.ok) {
-        setEmail(response.user.email)
-        setAuthenticated(true)
-        Router.push('/tasks')
+    }).then(resp => {
+      if (resp.ok) {
+        resp.json().then(data => {
+          setEmail(data.user.email)
+          setAuthenticated(true)
+          Router.push('/tasks')
+        })
       } else {
-        setErrors(response.errors)
-        if (response.flash) {
-          setMessages(response.flash)
-        }
-        setAuthenticated(false)
-        setPassInput('')
-        setEmailInput('')
+        resp.json().then(data => {
+          console.log(data)
+          if (data.errors) {
+            setErrors(data.errors)
+          }
+          if (data.flash) {
+            setMessages(data.flash)
+          }
+          setAuthenticated(false)
+        })
       }
+      setPassInput('')
+      setEmailInput('')
     })
   }
 
@@ -45,7 +52,7 @@ const Form = () => {
   }
 
   const clearErrors = () => {
-    if (errors.auth) setErrors({})
+    if (errors && errors.auth) setErrors({})
   }
 
   const onInputChangeHandler = (e, setFunc) => {

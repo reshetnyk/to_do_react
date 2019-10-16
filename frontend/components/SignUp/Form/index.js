@@ -19,13 +19,18 @@ const Form = () => {
         password: passInput,
         password_confirmation: confirmPassInput
       }
-    }).then(data => {
-      if (data.errors) {
-        setErrors(data.errors)
+    }).then(resp => {
+      console.log(resp)
+      if (resp.ok) {
+        Router.push('/users/sign_in')
+      } else {
+        resp.json().then(data => {
+          if (data.errors) {
+            setErrors(data.errors)
+          }
+        })
         setPassInput('')
         setConfirmPassInput('')
-      } else {
-        Router.push('/users/sign_in')
       }
     })
   }

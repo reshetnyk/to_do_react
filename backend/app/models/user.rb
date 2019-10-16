@@ -23,6 +23,14 @@ class User < ApplicationRecord
     false
   end
 
+  def generate_password_token
+    update_attribute(:password_reset_token, SecureRandom.urlsafe_base64.to_s)
+  end
+
+  def clear_password_token
+    update_attribute(:password_reset_token, nil)
+  end
+
   def activate
     update_attribute(:confirmed_at, DateTime.now)
     update_attribute(:confirm_token, nil)

@@ -10,16 +10,15 @@ const LogOut = () => {
     makeRequest({
       url: 'http://localhost:3000/api/sessions',
       method: 'delete'
-    }).then(
-      () => {
+    }).then(resp => {
+      if (resp.status === 401) {
+        Router.push('/users/sign_in')
+      } else if (resp.ok) {
         setAuthenticated(false)
         deleteEmail()
         Router.push('/users/sign_in')
-      },
-      () => {
-        Router.push('/users/sign_in')
       }
-    )
+    })
   }, [])
 
   return <></>

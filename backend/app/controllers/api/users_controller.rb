@@ -10,7 +10,7 @@ module Api
         UserMailer.confirmation_letter(user).deliver
         render json: {}
       else
-        render json: { errors: user.errors }
+        render json: { errors: user.errors }, status: 400
       end
     end
 

@@ -7,4 +7,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(to: "<#{user.email}>", subject: 'Registration Confirmation')
   end
+
+  def password_reset_letter(user)
+    @user = user
+    mail(to: "<#{user.email}>", subject: 'Password resetting')
+  end
 end

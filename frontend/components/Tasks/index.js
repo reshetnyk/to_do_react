@@ -12,18 +12,20 @@ const Tasks = () => {
 
   const loadTasks = () => {
     makeRequest({ url: 'http://localhost:3000/api/tasks' })
-      .then(
-        data => {
-          const newTasks = data.tasks.map(task => {
-            return { ...task, checked: false, editing: false }
-          })
-          setTasks(newTasks)
-          setAuthenticated(true)
-        },
-        () => {
+      .then(resp => {
+        if (resp.status === 401) {
           setAuthenticated(false)
           Router.push('/users/sign_in')
-        })
+        } else if (resp.ok) {
+          resp.json().then(data => {
+            const newTasks = data.tasks.map(task => {
+              return { ...task, checked: false, editing: false }
+            })
+            setTasks(newTasks)
+            setAuthenticated(true)
+          })
+        }
+      })
   }
   useEffect(() => {
     loadTasks()

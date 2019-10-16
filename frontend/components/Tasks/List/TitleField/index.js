@@ -39,17 +39,15 @@ const TitleField = ({ task, setTasks }) => {
       url: 'http://localhost:3000/api/tasks/' + task.id,
       method: 'put',
       data: { title: inputValue }
-    }).then(
-      () => {
-        setAuthenticated(true)
-      },
-      () => {
+    }).then(resp => {
+      if (resp.status === 401) {
         setAuthenticated(false)
         Router.push('/users/sign_in')
+      } else if (resp.ok) {
+        setAuthenticated(true)
       }
-    )
+    })
   }
-
   const cancelEditing = () => {
     updateTask({ ...task, editing: false })
     setInputValue(task.title)

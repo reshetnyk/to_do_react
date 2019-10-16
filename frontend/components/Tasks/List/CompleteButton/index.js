@@ -27,15 +27,14 @@ const CompleteButton = ({ tasks, setTasks, newStatus, setBulkToggle, text, class
       url: 'http://localhost:3000/api/task_update_completes',
       method: 'put',
       data: { ids, status: newStatus }
-    }).then(
-      () => {
-        setAuthenticated(true)
-      },
-      () => {
+    }).then(resp => {
+      if (resp.status === 401) {
         setAuthenticated(false)
         Router.push('/users/sign_in')
+      } else if (resp.ok) {
+        setAuthenticated(true)
       }
-    )
+    })
   }
 
   return <button onClick={onClickHandler} className={className}>{text}</button>

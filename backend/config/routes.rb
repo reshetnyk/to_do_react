@@ -11,5 +11,7 @@ Rails.application.routes.draw do
     resource :sessions, only: %i[create destroy]
     resources :users
     resource :user_confirm_emails, only: :update
+    resource :user_forgot_passwords, only: :create
+    resource :user_reset_passwords, only: :update
   end
 end

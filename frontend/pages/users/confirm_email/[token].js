@@ -1,26 +1,30 @@
 import Router, { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { makeRequest } from '../../../utils/RequestUtils'
+import UserContext from '../../../context/UserContext'
 
 const ConfirmEmail = () => {
   const router = useRouter()
   const [isRequestSent, setIsRequestSent] = useState(false)
   const [isRequestSuccessful, setIsRequestSuccessful] = useState(false)
   const [errorMsg, setErrorMsg] = useState(null)
+  const { isAuthenticated } = useContext(UserContext)
 
   useEffect(() => {
-    if (isRequestSent) return
+    if (isRequestSent || isAuthenticated) return
     makeRequest({
       url: 'http://localhost:3000/api/user_confirm_emails',
       method: 'put',
       data: { confirm_token: router.query.token }
-    }).then((data) => {
-      if (!data.error) {
+    }).then(resp => {
+      if (resp.ok) {
         setIsRequestSuccessful(true)
         setRedirectionTimer()
       } else {
-        setErrorMsg(data.error)
+        resp.json().then(data => {
+          if (data.error) setErrorMsg(data.error)
+        })
       }
       setIsRequestSent(true)
     })
@@ -30,7 +34,7 @@ const ConfirmEmail = () => {
     if (isRequestSuccessful) {
       return (
         <div className='alert alert-success' role='alert'>
-          Email has successfuly confirmed. Redirecting to sign in page in few secs.
+          Email has successfully confirmed. Redirecting to sign in page in few secs.
         </div>
       )
     }

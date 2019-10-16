@@ -70,15 +70,14 @@ const List = ({ tasks, setTasks, setBulkToggle }) => {
       url: 'http://localhost:3000/api/task_bulk_removes',
       method: 'delete',
       data: { tasks: deletedTasksIds }
-    }).then(
-      () => {
-        setAuthenticated(true)
-      },
-      () => {
+    }).then(resp => {
+      if (resp.status === 401) {
         setAuthenticated(false)
         Router.push('/users/sign_in')
+      } else if (resp.ok) {
+        setAuthenticated(true)
       }
-    )
+    })
 
     const updatedTasks = tasks.filter((task) => !deletedTasksIds.includes(task.id))
     updatedTasks.forEach((task, i) => {
@@ -109,7 +108,7 @@ const List = ({ tasks, setTasks, setBulkToggle }) => {
       url: 'http://localhost:3000/api/task_update_positions',
       method: 'put',
       data: { id: result.draggableId, position: result.destination.index + 1 }
-    }, setAuthenticated)
+    })
   }
 
   return (

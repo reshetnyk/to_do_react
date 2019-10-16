@@ -18,7 +18,7 @@ module Api
                                           type: 'warning' }] }, status: 400
         end
       end
-      render json: { errors: { email: ['Bad email or password'] } },
+      render json: { errors: { auth: ['Bad email or password'] } },
              status: 400
     end
 
