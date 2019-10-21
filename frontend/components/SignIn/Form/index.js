@@ -4,6 +4,7 @@ import Router from 'next/router'
 import UserContext from '../../../context/UserContext'
 import cn from 'classnames'
 import FlashContext from '../../../context/FlashContext'
+import Link from 'next/link'
 
 const Form = () => {
   const [emailInput, setEmailInput] = useState('')
@@ -86,6 +87,18 @@ const Form = () => {
             value={passInput}
             onChange={(e) => onInputChangeHandler(e, setPassInput)}
           />
+        </div>
+        <div className='d-inline-block'>
+          <div>
+            <Link href='/users/password_forgot'>
+              <a>Forgot password?</a>
+            </Link>
+          </div>
+          <div>
+            <Link href='/users/resend_confirmation'>
+              <a>Didn't receive confirmation instructions?</a>
+            </Link>
+          </div>
         </div>
         <button type='submit' className='btn btn-primary float-right'>Sign in</button>
       </form>

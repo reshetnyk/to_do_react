@@ -2,7 +2,7 @@ import PasswordResetForm from './Form'
 
 const PasswordResetComponent = ({ token }) => {
   return (
-    <PasswordResetForm token={token}/>
+    <PasswordResetForm token={token} />
   )
 }
 

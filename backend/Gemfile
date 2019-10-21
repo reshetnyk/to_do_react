@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
+gem 'rake', '< 11.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
@@ -50,3 +51,11 @@ gem 'bcrypt-ruby'
 gem 'jwt'
 gem 'letter_opener', group: :development
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+group :development, :test do
+  gem 'test-unit'
+  gem 'rspec', '~> 3.5.0.beta4'
+  gem 'rspec-rails', '~> 3.5.0.beta4'
+  gem 'factory_bot_rails'
+
+end

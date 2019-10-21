@@ -13,5 +13,6 @@ Rails.application.routes.draw do
     resource :user_confirm_emails, only: :update
     resource :user_forgot_passwords, only: :create
     resource :user_reset_passwords, only: :update
+    resource :user_resend_confirmations, only: :update
   end
 end
